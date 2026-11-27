@@ -14,7 +14,7 @@ sys.path.insert(0, ROOT)
 import editteam  # noqa: E402  하위 프로세스(ffmpeg·claude 등)가 새 콘솔 창을 띄우지 않게
 WORK = os.path.join(ROOT, "work")
 PORT = int(os.environ.get("EDITTEAM_PORT", "8431"))   # 뤼미에르 젠 = 8431 (에디트 8430과 동시에 켤 수 있게)
-app = FastAPI(title="LUMIÈRE GEN System · 디렉터스 AI")
+app = FastAPI(title="LUMIÈRE GEN System · 아트고메")
 
 # ── 보안(2026-10-07 출시 점검 A10): 이 PC의 브라우저에서 이 대시보드 페이지로 연 요청만 받는다.
 #   - Host 가 localhost/127.0.0.1 이 아니면 거절(DNS 리바인딩 방지)

@@ -406,7 +406,7 @@ export const IDLE = {
     const p = 0.55 + 0.45 * Math.sin(t * (TAU / 4));
     glow(ctx, r.x + r.w / 2, r.y + r.h / 2, 80, GOLD_RGB, 0.12 * p);
     label(ctx, 'LUMIÈRE GEN', r.x + r.w / 2, r.y + r.h / 2 - 8, { size: 22, weight: 800, family: FONT_DISPLAY, color: PAPER, align: 'center', tracking: 0.12, alpha: 0.6 + 0.4 * p });
-    label(ctx, 'DIRECTORS·AI GEN SYSTEM', r.x + r.w / 2, r.y + r.h / 2 + 20, { size: 9, weight: 700, color: GOLD, align: 'center', tracking: 0.3 });
+    label(ctx, 'ARTGOURMET GEN SYSTEM', r.x + r.w / 2, r.y + r.h / 2 + 20, { size: 9, weight: 700, color: GOLD, align: 'center', tracking: 0.3 });
   },
   draw(ctx, t) {
     // 충전하며 자는 로봇

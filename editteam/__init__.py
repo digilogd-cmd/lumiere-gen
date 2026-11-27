@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""디렉터스AI 편집팀 실행기."""
+"""아트고메 편집팀 실행기."""
 import subprocess as _sp
 import sys as _sys
 
