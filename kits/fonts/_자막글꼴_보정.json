@@ -1,0 +1,30 @@
+{
+ "barun": {
+  "fs": 48,
+  "pil": 43,
+  "ink_k": 0.975,
+  "measured_h": 38,
+  "measured_w": 572
+ },
+ "pretend": {
+  "fs": 53,
+  "pil": 44,
+  "ink_k": 1.0039,
+  "measured_h": 38,
+  "measured_w": 589
+ },
+ "blackhan": {
+  "fs": 51,
+  "pil": 53,
+  "ink_k": 0.9519,
+  "measured_h": 39,
+  "measured_w": 637
+ },
+ "jua": {
+  "fs": 50,
+  "pil": 46,
+  "ink_k": 0.9814,
+  "measured_h": 38,
+  "measured_w": 565
+ }
+}

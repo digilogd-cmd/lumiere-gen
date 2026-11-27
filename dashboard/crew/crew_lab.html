@@ -1,0 +1,13 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Crew Lab</title>
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+<style>html,body{margin:0;background:#000;color:#fff;font-family:Pretendard,sans-serif}#f{width:1280px;height:720px;display:block}</style></head>
+<body><canvas id="f" data-crew-frame></canvas>
+<script type="module">
+import { mountEditCrew, SCENES } from './editcrew.js';
+const q = new URLSearchParams(location.search);
+const crew = mountEditCrew(document.getElementById('f'), { stage: q.get('stage') || 'sync', autoplay: !q.has('t') });
+if (q.has('t')) crew.player.seek(parseFloat(q.get('t')));
+window.__crew = crew; window.__scenes = SCENES.map(s => s.id);
+</script></body></html>

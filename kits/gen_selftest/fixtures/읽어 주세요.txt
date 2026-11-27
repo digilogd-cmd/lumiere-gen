@@ -1,0 +1,2 @@
+생성형 자가 검사(시험 B) 시험 파일. 2026-10-08 시험 A(실제 Flow·AI Studio·Flow Music)에서 받은 것.
+images/·sheets/ = Flow Nano Banana 2.1 그림(워터마크 제거 후) · video/ = Flow Veo 3.1 Lite 클립(앞 6초, 오른쪽·아래 10% 잘라 냄) · voice/ = AI Studio Gemini TTS(Charon) 내레이션 · music/ = Flow Music '1895: The Birth of Cinema' 앞 40초
