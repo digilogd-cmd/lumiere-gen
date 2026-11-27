@@ -710,7 +710,7 @@ async function openModal(){$("#modal").classList.add("show");   // 설정의 기
   document.querySelector(`input[name="gAsp"][value="${String(v("생성.세로"))==="true"?"v":"h"}"]`).checked=true}catch(e){}}
 $("#newBtn").onclick=openModal;
 document.querySelectorAll(".closeM").forEach(b=>b.onclick=()=>$("#modal").classList.remove("show"));
-$("#gPick").onclick=async()=>{$("#gNote").textContent="파일 선택 창을 열었어요(작업 표시줄에 숨어 있을 수 있어요)…";const r=await post("/api/pick",{});
+$("#gPick").onclick=async()=>{$("#gNote").textContent="파일 선택 창을 열었어요(다른 창 뒤나 작업 표시줄·Dock에 숨어 있을 수 있어요)…";const r=await post("/api/pick",{});
  if(r.ok){const fs=await r.json();if(fs.length)$("#gScript").value=fs[0].path}$("#gNote").textContent=""};
 $("#gGo").onclick=async()=>{const topic=$("#gTopic").value.trim(),script=$("#gScript").value.trim().replace(/^"|"$/g,"");
  if(!topic&&!script){$("#gNote").textContent="주제나 대본 파일 중 하나는 있어야 해요.";return}
@@ -754,7 +754,7 @@ function showTestGen(r){const t=r.selftest_gen;$("#engTestGenInfo").innerHTML=r.
  if(r.selftest_gen_running)setTimeout(async()=>{try{showTestGen(await (await fetch("/api/engine")).json())}catch(e){}},8000)}
 $("#engTestGen").onclick=async()=>{const r=await post("/api/engine",{action:"selftest_gen"});const j=await r.json().catch(()=>({}));if(!r.ok){$("#setMsg").textContent=j.detail||"실패";return}setTimeout(loadEngine,1500)};
 $("#engExport").onclick=async()=>{const n=(prompt("스타일 팩 이름(예: 강의형 깔끔 스타일)")||"").trim();if(!n)return;const r=await post("/api/engine",{action:"export",name:n});const j=await r.json();
- $("#setMsg").textContent=r.ok?"내보냈어요 — 탐색기에서 파일을 보여 드려요":(j.detail||"실패")};
+ $("#setMsg").textContent=r.ok?"내보냈어요 — 탐색기(맥은 Finder)에서 파일을 보여 드려요":(j.detail||"실패")};
 $("#engImport").onclick=async()=>{const r=await post("/api/engine",{action:"import_pick"});const j=await r.json().catch(()=>({}));if(!r.ok){$("#setMsg").textContent=j.detail||"실패";return}if(!j.ok)return;
  const i=j.info;const code=i.engine.length?confirm(`'${i.name}' 스타일 팩에 코드 파일 ${i.engine.length}개가 들어 있어요${i.same_factory?"":" (다른 버전에서 만든 팩 — 안 맞을 수 있어요)"}.
 코드까지 가져올까요? (확인=코드까지, 취소=설정만)

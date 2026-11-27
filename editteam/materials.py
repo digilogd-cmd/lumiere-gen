@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """대본 파일 읽기(txt·md·rtf·docx·hwpx·hwp·doc) — 생성형 의뢰서가 씀.
 (뤼미에르 에디트의 materials.py 에서 대본 읽기만 남김 — 2026-10-09 젠 분리 정리)"""
+import sys
 import html, os, re, subprocess, zipfile, zlib
 
 SCRIPT = (".txt", ".md", ".docx", ".doc", ".hwp", ".hwpx", ".rtf")
@@ -56,6 +57,12 @@ def read_hwp(path):
 
 
 def read_doc_with_word(path):
+    if sys.platform != "win32":           # 맥 = textutil(기본 도구)
+        from .plat import doc_to_text
+        t = doc_to_text(path)
+        if t is None:
+            raise RuntimeError("옛 워드(doc) 파일을 읽지 못했어요. docx로 저장해 주세요.")
+        return t
     out = os.path.splitext(path)[0] + "__lumiere_tmp.txt"
     ps = ("$w = New-Object -ComObject Word.Application; $w.Visible = $false; try { "
           f"$d = $w.Documents.Open('{path}', $false, $true); $d.SaveAs2('{out}', 7, $false, '', $false, '', $false, $false, $false, $false, $false, 65001); $d.Close($false) "

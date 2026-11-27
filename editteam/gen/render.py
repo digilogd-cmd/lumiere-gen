@@ -6,6 +6,7 @@
   영상 끝까지 apad(게이트 EP02 끝 8초 잘림 사고 방지).
 - local_tts: AI Studio 를 못 쓸 때 윈도우 내장 한국어 음성(Microsoft Heami)으로 임시 내레이션.
 - synth_pad: 음악을 못 받을 때 잔잔한 패드 합성(외부 곡 다운로드 안 함)."""
+import sys
 import math, os, re, subprocess, tempfile
 import numpy as np
 
@@ -202,6 +203,15 @@ def mix_voice_music(voice, music, T, lead, level, out, fade_in=2.0, fade_out=3.0
 def local_tts(text, out, voice="Heami", rate=0):
     """윈도우 내장 한국어 음성으로 임시 내레이션(wav). 'Microsoft Heami' — 이 PC에 설치 확인(기획서 7장)."""
     tdir = tempfile.mkdtemp(prefix="lumiere_tts_")
+    if sys.platform == "darwin":           # 맥 내장 한국어 음성(Yuna) → wav
+        aiff = os.path.join(tdir, "t.aiff")
+        r = subprocess.run(["say", "-v", "Yuna", "-r", str(180 + int(rate) * 15), "-o", aiff, text], capture_output=True)
+        if r.returncode or not os.path.exists(aiff):
+            r = subprocess.run(["say", "-o", aiff, text], capture_output=True)
+        subprocess.run(["ffmpeg", "-y", "-v", "error", "-i", aiff, "-ar", "48000", "-ac", "1", out], capture_output=True)
+        if not os.path.exists(out) or os.path.getsize(out) < 2000:
+            raise StageError("맥 음성 합성(say) 실패: " + r.stderr.decode("utf-8", "replace")[-300:])
+        return out
     tf = os.path.join(tdir, "t.txt")
     open(tf, "w", encoding="utf-8").write(text)
     ps = os.path.join(tdir, "s.ps1")

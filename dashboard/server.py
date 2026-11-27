@@ -240,8 +240,8 @@ def running(project):
     if not os.path.exists(pf):
         return False
     pid = int(open(pf).read().strip() or 0)
-    r = subprocess.run(["tasklist", "/FI", f"PID eq {pid}", "/NH"], capture_output=True, text=True)
-    return str(pid) in r.stdout
+    from editteam.plat import pid_alive          # 윈도우 tasklist · 맥 kill -0
+    return pid_alive(pid)
 
 
 @app.post("/api/continue")
@@ -397,6 +397,9 @@ async def onboarding_post(req: Request):
 
         def dlg():
             with PICK_LOCK:
+                if sys.platform == "darwin":
+                    from editteam.plat import mac_pick_files
+                    return (mac_pick_files("채널 로고(PNG)") or [""])[0]
                 import tkinter as tk
                 from tkinter import filedialog
                 root = tk.Tk(); root.withdraw(); root.attributes("-topmost", True)
@@ -427,9 +430,14 @@ def engine_status():
 
 def restart_server_later():
     """엔진 파일이 바뀌었으니 대시보드를 새 코드로 다시 켠다(2초 뒤 새 서버, 이 서버는 곧 종료)."""
-    ps = (f"Start-Sleep -Seconds 2; Start-Process -WindowStyle Hidden -FilePath '{sys.executable}' "
-          f"-ArgumentList 'dashboard\server.py' -WorkingDirectory '{ROOT}'")
-    subprocess.Popen(["powershell", "-NoProfile", "-WindowStyle", "Hidden", "-Command", ps], creationflags=0x08000000)
+    if sys.platform == "win32":
+        ps = (f"Start-Sleep -Seconds 2; Start-Process -WindowStyle Hidden -FilePath '{sys.executable}' "
+              f"-ArgumentList 'dashboard\server.py' -WorkingDirectory '{ROOT}'")
+        subprocess.Popen(["powershell", "-NoProfile", "-WindowStyle", "Hidden", "-Command", ps], creationflags=0x08000000)
+    else:                                   # 맥: 2초 뒤 새 서버(이 서버와 떨어진 세션)
+        import shlex
+        subprocess.Popen(["/bin/sh", "-c", f"sleep 2; cd {shlex.quote(ROOT)} && exec {shlex.quote(sys.executable)} dashboard/server.py >> work/dashboard.log 2>&1"],
+                         stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, start_new_session=True)
     threading.Timer(0.8, lambda: os._exit(0)).start()
 
 
@@ -452,13 +460,17 @@ async def engine_action(req: Request):
         return {"ok": True, "started": True}
     if act == "export":
         path = layers.export_style(b.get("name") or "내 스타일")
-        subprocess.Popen(["explorer", "/select,", path])
+        from editteam.plat import reveal
+        reveal(path)
         return {"ok": True, "path": path}
     if act == "import_pick":
         import asyncio
 
         def dlg():
             with PICK_LOCK:
+                if sys.platform == "darwin":
+                    from editteam.plat import mac_pick_files
+                    return (mac_pick_files("가져올 스타일 팩(.zip)") or [""])[0]
                 import tkinter as tk
                 from tkinter import filedialog
                 root = tk.Tk(); root.withdraw(); root.attributes("-topmost", True)
@@ -498,7 +510,8 @@ async def deliver(req: Request):
     if not os.path.isdir(pdir(b["project"])):
         raise HTTPException(404, "프로젝트가 없어요")
     out, got = collect(Project(b["project"]))
-    os.startfile(out)
+    from editteam.plat import open_path as _open
+    _open(out)
     return {"ok": True, "path": out, "files": got}
 
 
@@ -507,10 +520,11 @@ async def open_path(req: Request):
     b = await req.json()
     p = safe_path(b["path"])
     target = p if b.get("file") else (p if os.path.isdir(p) else os.path.dirname(p))
+    from editteam import plat
     if b.get("select") and os.path.isfile(p):
-        subprocess.Popen(["explorer", "/select,", p])
+        plat.reveal(p)
     else:
-        os.startfile(target)
+        plat.open_path(target)
     return {"ok": True}
 
 
@@ -682,6 +696,9 @@ async def pick_files():
 
     def dlg():
         with PICK_LOCK:
+            if sys.platform == "darwin":
+                from editteam.plat import mac_pick_files
+                return mac_pick_files("대본 파일 고르기 (여러 개 — Command/Shift)")
             import tkinter as tk
             from tkinter import filedialog
             root = tk.Tk(); root.withdraw(); root.attributes("-topmost", True)

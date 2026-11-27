@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """생성형 공통: 설정(생성.*), 프로젝트 안내 정보(brief), 크롬 다운로드 폴더 찾기, 화면 크기."""
+import sys
 import datetime, json, os
 
 from ..core import jload
@@ -48,7 +49,10 @@ def sdir(P, name):
 
 def chrome_download_dir():
     """크롬 설정(Preferences)에서 다운로드 폴더를 읽는다. 못 찾으면 사용자 '다운로드' 폴더."""
-    base = os.path.join(os.environ.get("LOCALAPPDATA", ""), "Google", "Chrome", "User Data")
+    if sys.platform == "darwin":                   # 맥 크롬 설정 위치
+        base = os.path.join(os.path.expanduser("~"), "Library", "Application Support", "Google", "Chrome")
+    else:
+        base = os.path.join(os.environ.get("LOCALAPPDATA", ""), "Google", "Chrome", "User Data")
     cands = []
     if os.path.isdir(base):
         for prof in ["Default"] + sorted(x for x in os.listdir(base) if x.startswith("Profile ")):

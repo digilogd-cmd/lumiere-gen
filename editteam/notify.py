@@ -7,8 +7,9 @@ APP = r"{1AC14E77-02E7-4E5D-B744-2EB1AE5198B7}\WindowsPowerShell\v1.0\powershell
 
 
 def toast(title, body):
-    if sys.platform != "win32":
-        return False
+    if sys.platform != "win32":          # 맥 = 알림 센터(plat.py)
+        from .plat import toast as _t
+        return _t(title, body)
     esc = lambda s: (s or "").replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace("'", "&apos;")
     xml = f'<toast><visual><binding template="ToastGeneric"><text>{esc(title)}</text><text>{esc(body)}</text></binding></visual></toast>'
     ps = ("[Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime] > $null;"
@@ -28,4 +29,4 @@ def notify(P, state, msg):
     if not (P.cfg.get("알림") or {}).get("켜기", True):
         return
     title = {"done": "✔ 편집 완료", "waiting": "⏸ 확인할 차례예요", "error": "✖ 편집이 멈췄어요"}.get(state, "편집팀")
-    toast(f"{title} — {P.name}", msg + "  (대시보드 localhost:8430)")
+    toast(f"{title} — {P.name}", msg + "  (대시보드 localhost:8431)")

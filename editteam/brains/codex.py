@@ -55,7 +55,7 @@ def codex_cmd():
     app = sorted(glob.glob(os.path.join(os.environ.get("LOCALAPPDATA", ""), "OpenAI", "Codex", "bin", "*", "codex.exe")), key=os.path.getmtime)
     if app:
         return [app[-1]]
-    for n in ("codex.cmd", "codex.exe"):
+    for n in ("codex.cmd", "codex.exe", "codex"):   # 맥·리눅스는 확장자 없는 codex
         p = shutil.which(n)
         if p:
             return [p]

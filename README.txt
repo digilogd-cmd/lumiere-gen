@@ -10,14 +10,17 @@
   1) Claude Pro 요금제 이상 + Claude 앱(데스크톱) 로그인 — https://claude.ai/download
   2) 크롬 + Claude in Chrome 확장, 그리고 그 크롬에서 Google Flow · Google AI Studio 로그인
      (그림·영상·음악·목소리는 Claude가 내 크롬으로 Flow·AI Studio를 직접 움직여 만들어요. Flow 영상은 크레딧을 씁니다)
-  3) 이 PC에 Python 3.9 이상, ffmpeg, Node.js 22 이상
+  3) 윈도우 10/11 PC 또는 macOS 13 이상 맥(애플 칩 권장 · 맥은 시험판)
+     Python·ffmpeg·Node.js 는 설치 때 오귀스트가 점검하고 깔아 줘요
 
 
 ■ 처음 한 번만
-  1) 이 'LUMIERE_GEN' 폴더를 원하는 곳에 둡니다. (한글이 없는 경로 권장. 예: C:\LUMIERE_GEN)
+  1) 이 'LUMIERE_GEN' 폴더를 원하는 곳에 둡니다. (한글이 없는 경로 권장. 예: 윈도우 C:\LUMIERE_GEN · 맥 홈 폴더 아래 ~/LUMIERE_GEN)
   2) Claude 앱 → [Code] → [폴더 열기] → 이 폴더. 이제 그 창의 Claude가 '뤼미에르 젠 제작 팀장 오귀스트'예요.
   3) 그 창에 "설치해 줘" → 오귀스트가 Python·ffmpeg·Node.js와 부품을 점검하고 없는 것만 설치해요(허락 창은 직접 확인)
-  4) 'LUMIERE_GEN_시작.bat' 더블클릭 → 브라우저에 대시보드(http://localhost:8431)
+     맥은 Homebrew 로 설치해요. Homebrew 가 없으면 오귀스트가 터미널에 붙여 넣을 한 줄을 알려 줘요(맥 비밀번호 입력은 직접)
+  4) 윈도우 = 'LUMIERE_GEN_시작.bat' · 맥 = 'LUMIERE_GEN_시작.command' 더블클릭 → 브라우저에 대시보드(http://localhost:8431)
+     (맥에서 "확인되지 않은 개발자" 경고가 뜨면 파일을 오른쪽 클릭 → 열기 → 열기)
   5) 처음이면 오귀스트와 '첫 만남'(채널·화풍·분위기·꼭 피할 것 등)
 
 

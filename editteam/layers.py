@@ -12,7 +12,7 @@ import hashlib, io, json, os, re, shutil, time, zipfile
 from .core import ROOT
 
 ENGINE_DIRS = ("editteam", "dashboard", "kits")
-ENGINE_FILES = ("config.yaml", "CLAUDE.md", "README.txt", "LUMIERE_GEN_시작.bat")
+ENGINE_FILES = ("config.yaml", "CLAUDE.md", "README.txt", "LUMIERE_GEN_시작.bat", "LUMIERE_GEN_시작.command")   # .command = 맥
 STYLE_PATHS = ("설정.json", "내_스타일.md", "프리셋", "자막_교정표.yaml", "내_로고", "기능요청.jsonl", ".env")
 SKIP = re.compile(r"(__pycache__|\.pyc$|\.tmp$|\.log$|\.restore$|chat_session|_rows_.*\.json$|_t_rows\.json$|node_modules)")
 KEEP = os.path.join(ROOT, "_보관")

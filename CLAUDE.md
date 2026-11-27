@@ -19,15 +19,31 @@
 4. 그 뒤로는 `내_스타일.md`(내 스타일 노트)를 기준으로 일한다. 제작팀 AI(대본·콘티·음악 프롬프트·제목)는 이 노트를 함께 읽고 판단한다.
 - 대화 중 사용자가 취향을 말하면("앞으로는 연필 스케치로", "어두운 장면은 빼 줘") 지금 영상에 반영하는 것과 별개로 `python -m editteam profile note "..."` 로 노트에 남긴다.
 
-## "설치해 줘" (처음 한 번)
-사용자가 설치를 부탁하면 하나씩 점검하고, 없는 것만 설치한다. 설치 창·허락 창이 뜨면 미리 알려 주고 사용자가 직접 누르게 한다.
+## "설치해 줘" (처음 한 번 — 윈도우·맥 공용)
+사용자가 설치를 부탁하면 먼저 운영체제를 확인하고(`python -c "import sys;print(sys.platform)"` 또는 `uname`), 하나씩 점검해 없는 것만 설치한다. 설치 창·허락 창이 뜨면 미리 알려 주고 사용자가 직접 누르게 한다. 사용자는 컴퓨터를 잘 모를 수 있으니 한 단계씩, 무엇을 왜 하는지 짧게 말한다.
+
+### 윈도우
 1. `python --version`(3.9~3.12, 권장 3.11) — 없으면 `winget install -e --id Python.Python.3.11`
 2. `ffmpeg -version` — 없으면 `winget install -e --id Gyan.FFmpeg`(설치 뒤 새 터미널에서 다시 확인)
 3. `node --version`(22 이상) — 없으면 `winget install -e --id OpenJS.NodeJS.LTS`
 4. 이 폴더에서 `python -m pip install --upgrade pip` → `python -m pip install -r requirements.txt`
 5. `_보관/공장초기.zip` 이 없으면(저장소에서 받은 경우) `python -m editteam engine factory gen-public` 으로 출고 상태를 한 번 저장한다.
 6. `python -m editteam selftest --vertical` 로 자가 검사(처음엔 받아쓰기 모델을 내려받느라 몇 분 더 걸림). 통과하면 `LUMIERE_GEN_시작.bat` 을 안내한다.
-7. 크롬에 Claude in Chrome 확장을 깔고, 그 크롬에서 Google Flow·AI Studio·Flow Music 에 로그인하는 것은 사용자가 직접 한다.
+
+### 맥 (시험판 — macOS 13 이상, 애플 칩 권장)
+**맥에서는 이 문서의 모든 `python` 을 이 폴더의 `.venv/bin/python` 으로 바꿔 부른다**(맥의 `python` 은 없거나 시스템용이라 패키지를 깔 수 없다 → 폴더 안 가상환경). 모든 명령은 이 폴더에서 실행한다.
+1. `brew --version` — Homebrew 가 없으면 설치에 맥 비밀번호가 필요해서 **내가 대신 할 수 없다.** "터미널 앱을 열고 brew.sh 첫 화면의 설치 명령 한 줄을 붙여 넣어 주세요"라고 안내하고, 끝나면 터미널에 나오는 'Next steps' 두 줄(PATH 등록)도 실행하게 한다. 그 뒤 Claude 앱을 완전히 껐다 켠다.
+2. `brew install python@3.11 ffmpeg node` — '명령어 라인 개발자 도구' 설치 창이 뜨면 설치를 누르게 안내한다. 확인: `python3.11 --version` · `ffmpeg -version` · `node --version`(22 이상).
+3. `python3.11 -m venv .venv` → `.venv/bin/python -m pip install --upgrade pip` → `.venv/bin/python -m pip install -r requirements.txt`
+4. `_보관/공장초기.zip` 이 없으면 `.venv/bin/python -m editteam engine factory gen-public`
+5. `.venv/bin/python -m editteam selftest --vertical` 로 자가 검사(맥은 받아쓰기가 CPU라 윈도우보다 오래 걸릴 수 있다). 통과하면 `LUMIERE_GEN_시작.command` 더블클릭을 안내한다.
+   - 처음 열 때 "확인되지 않은 개발자" 경고가 뜨면: 파일을 **오른쪽 클릭 → 열기 → 열기**. "실행 권한이 없다"고 하면 `chmod +x LUMIERE_GEN_시작.command`.
+6. 자주 막히는 곳(맥): brew·ffmpeg·node 를 설치했는데 명령을 못 찾음 → Claude 앱을 완전히 껐다 다시 열기(애플 칩 Homebrew 는 `/opt/homebrew/bin`). 파일 고르기 창·알림이 안 뜸 → 시스템 설정 > 개인정보 보호 및 보안 > 자동화에서 Claude(또는 터미널) 허용. 임시 목소리는 맥 내장 한국어 음성(Yuna)을 쓴다 — 없으면 시스템 설정 > 손쉬운 사용 > 읽기 및 말하기에서 한국어 음성을 받게 안내.
+7. **맥에서 처음 막힌 곳은 고친 뒤 무엇이 문제였는지 `맥시험_결과.md` 에 적어 두고**, 사용자에게 뤼미에르 팀(artgourmet.official@gmail.com)에 보내 주면 다음 판에 반영된다고 알린다.
+
+### 공통
+- 크롬에 Claude in Chrome 확장을 깔고, 그 크롬에서 Google Flow·AI Studio·Flow Music 에 로그인하는 것은 사용자가 직접 한다(맥에서 받기 단축키는 Ctrl 대신 ⌘).
+- 절대 하지 않는 것: 비밀번호·API 키를 묻거나 파일에 쓰기, 결제·약관 동의를 대신 누르기, 시스템 보안 설정 바꾸기.
 
 ## 실행기 명령 (오래 걸리므로 `bg` 로 — 기다리지 않고 바로 돌아온다. 진행은 대시보드에 실시간으로 보인다)
 - 새로 만들기: `python -m editteam bg run --topic "주제" [--script 대본.hwp] [--length 90] [--style "따뜻한 수채화풍 일러스트"] [--speakers 1] [--vertical|--horizontal]`
